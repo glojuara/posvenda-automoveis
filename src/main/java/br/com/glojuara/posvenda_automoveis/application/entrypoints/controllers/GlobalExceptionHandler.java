@@ -1,5 +1,8 @@
 package br.com.glojuara.posvenda_automoveis.application.entrypoints.controllers;
 
+import br.com.glojuara.posvenda_automoveis.domain.excepctions.ContratoAjuizadoException;
+import br.com.glojuara.posvenda_automoveis.domain.excepctions.ContratoEncerradoException;
+import br.com.glojuara.posvenda_automoveis.domain.excepctions.NumeroContratoInvalidoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +20,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleGeneralException(Exception ex) {
         // Personalize a mensagem de erro ou log aqui, se necessário
         return new ResponseEntity<>(new ErrorResponse("Erro interno do servidor", ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({ContratoAjuizadoException.class, ContratoEncerradoException.class, NumeroContratoInvalidoException.class })
+    public ResponseEntity<Object> handleDomainExceptions(Exception ex) {
+        // Personalize a mensagem de erro ou log aqui, se necessário
+        return new ResponseEntity<>(new ErrorResponse("Requisição inválida", ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

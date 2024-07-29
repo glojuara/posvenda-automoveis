@@ -2,6 +2,7 @@ package br.com.glojuara.posvenda_automoveis.domain.services.impl;
 
 import br.com.glojuara.posvenda_automoveis.domain.entities.Contrato;
 import br.com.glojuara.posvenda_automoveis.domain.entities.Status;
+import br.com.glojuara.posvenda_automoveis.domain.excepctions.ContratoEncerradoException;
 import br.com.glojuara.posvenda_automoveis.domain.services.ValidarElegibilidadeContratoService;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class ValidarElegibilidadeContratoEncerramentoService implements ValidarE
 
 
         if (Status.ENCERRADO.equals(contrato.getStatus())) {
-            throw new RuntimeException("Contrato encerrado");
+            throw new ContratoEncerradoException("Contrato encerrado");
         }
 
     }
